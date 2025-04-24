@@ -1,0 +1,40 @@
+CUDA_VISIBLE_DEVICES=0 python src/train.py \
+    --stage sft \  # 有监督微调(sft/dpo/kto/ppo/pt/rm等)
+    --do_train True \  # 训练, (True/False)
+    --model_name_or_path /model_file/Qwen1.5-4B/ \  # 模型路径
+    --preprocessing_num_workers 16 \  # 进程数
+    --finetuning_type lora \  # 微调方式(lora微调/full全参微调)
+    --template default \  # 模版类型default(qwen)
+    --flash_attn auto \  #
+    --dataset_dir data \  # 数据文件夹路径
+    --dataset alpaca_zh_demo \  # 训练数据集
+    --cutoff_len 1024 \  # 截断长度
+    --learning_rate 5e-05 \  # 学习率
+    --num_train_epochs 3.0 \  # 训练轮次
+    --per_device_train_batch_size 16 \
+    --gradient_accumulation_steps 16 \
+    --lr_scheduler_type cosine \
+    --max_grad_norm 1.0 \
+    --logging_steps 10 \
+    --save_steps 100 \
+    --warmup_steps 100 \
+    --optim adamw_torch \  # 优化器
+    --output_dir saves/qwen1.5-4b/lora/sft/ \  # 模型保存路径
+    --overwrite_output_dir False \
+    --bf16 True \
+    --plot_loss True \  # 绘制loss曲线
+    --lora_rank 8 \
+    --lora_alpha 16 \
+    --lora_dropout 0.1 \
+    --lora_target q_proj, v_proj \
+    # --max_samples 100000 \  #
+    # --packing False \
+    # --report_to none \
+    # --ddp_timeout 180000000 \
+    # --include_num_input_tokens_seen True \
+    > ./train.log 2>&1 &
+
+
+CUDA_VISIBLE_DEVICES=0
+GRADIO_SHARE=1
+GRADIO_SERVER_PORT=7860
