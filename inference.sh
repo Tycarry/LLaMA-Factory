@@ -1,0 +1,17 @@
+CUDA_VISIBLE_DEVICES=0 llamafactory-cli train \
+    --stage sft \
+    --do_predict \
+    --model_name_or_path /media/codingma/LLM/llama3/Meta-Llama-3-8B-Instruct \
+    --adapter_name_or_path ./saves/LLaMA3-8B/lora/sft  \
+    --eval_dataset alpaca_gpt4_zh,identity,adgen_local \
+    --dataset_dir ./data \
+    --template llama3 \
+    --finetuning_type lora \
+    --output_dir ./saves/LLaMA3-8B/lora/predict \
+    --overwrite_cache \
+    --overwrite_output_dir \
+    --cutoff_len 1024 \
+    --preprocessing_num_workers 16 \
+    --per_device_eval_batch_size 1 \
+    --max_samples 20 \
+    --predict_with_generate
